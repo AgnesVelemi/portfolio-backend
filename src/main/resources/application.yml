@@ -1,0 +1,6 @@
+# disables the check for the template location, 
+# to avoid errors if your templates are not 
+# in the default resources/templates location
+spring:
+  thymeleaf:
+    check-template-location: false
