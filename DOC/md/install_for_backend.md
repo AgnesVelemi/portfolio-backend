@@ -58,4 +58,4 @@ This backend is designed to work with the **Angular Frontend**.
 If you encounter `java.lang.ExceptionInInitializerError` related to `TypeTag.UNKNOWN`, ensure you are using **Lombok 1.18.32** or newer, as it provides stable support for Java 21+.
 
 ---
-*Back to [README_live.md](../../README_live.md)*
+*Back to [README.md](../../README.md)*
