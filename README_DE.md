@@ -4,7 +4,7 @@ Willkommen beim Backend-Projekt meines professionellen Portfolios. Diese Anwendu
 
 ## 🔗 Portfolio-Ökosystem
 
-Dieses Projekt ist Teil einer größeren Full-Stack-Anwendung. Sie können das ergänzende Frontend-Projekt hier erkunden:
+Dieses Projekt ist der Backend-Teil einer größeren Full-Stack-Anwendung. Sie können das ergänzende Frontend-Projekt hier erkunden:
 
 - **Frontend-Repository**: [Portfolio Frontend (Angular)](https://github.com/AgnesVelemi/portfolio-frontend.git)
 - **Backend-Repository**: [Portfolio Backend (Spring Boot)](https://github.com/AgnesVelemi/portfolio-backend.git)
@@ -16,12 +16,16 @@ Das Backend ist derzeit so konfiguriert, dass es mit dem Angular-Frontend kommun
 - **Echtzeit-Kommunikation**: Duale WebSocket-Architektur, die sowohl Raw-Data-WebSockets als auch STOMP über WebSockets für eine vielseitige Datensynchronisation nutzt.
 - **MVC & RESTful Integration**:
     - **@Controller Architektur**: Der `DashboardController` verwaltet das zentrale Dashboard über Spring MVC und injiziert initiale serverseitige Daten (Umgebung, Zeitzone, Server-Laufzeit) in das `Model` für das **Thymeleaf**-Rendering.
-    - **Saubere API-Endpunkte**: Dokumentierte Endpunkte für den Abruf von Lebenslaufdaten und die sitzungsbasierte Nachrichtenverarbeitung.
+    - **Saubere API-Endpunkte**: Dokumentierte Endpunkte für den Abruf von Lebenslaufdaten und die Nachrichtenverarbeitung.
 - **Dynamisches Frontend**: Die Dashboard-UI wird mit Thymeleaf vorgerendert und durch integrierte `dashboard.js`-Logik dynamisch aktualisiert.
 
 ## 📡 WebSocket-Architektur
 
 Das System implementiert eine differenzierte Dual-Kanal-Kommunikationsstrategie:
+
+<p align="center">
+  <img src="./DOC/md/FE_BE_UI.png" alt="Full-Stack Architektur" width="800">
+</p>
 
 1.  **Lokaler Raw-WebSocket (`/ws/dashboard`)**:
     - Dediziert für lokale Datensynchronisation und interne Statusüberwachung.
@@ -44,11 +48,11 @@ Das System implementiert eine differenzierte Dual-Kanal-Kommunikationsstrategie:
 
 Detaillierte Anweisungen zur Einrichtung dieses Backends auf Ihrem lokalen Rechner finden Sie im:
 
-👉 **[Live-Installationsleitfaden](DOC/md/install_for_backend_live.md)**
+👉 **[Live-Installationsleitfaden](DOC/md/install_for_backend.md)**
 
 ## 🌍 Mehrsprachige Dokumentation
 
-- 🇬🇧 **[README in Englisch / English Version](README_live.md)**
+- 🇬🇧 **[README in Englisch / English Version](README.md)**
 
 ---
 *Entwickelt von Agnes Velemi - Leidenschaftliche Full-Stack-Entwicklerin*

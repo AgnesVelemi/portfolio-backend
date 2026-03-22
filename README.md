@@ -23,6 +23,10 @@ The backend is currently configured to communicate with the Angular frontend run
 
 The system implements a sophisticated dual-channel communication strategy:
 
+<p align="center">
+  <img src="./DOC/md/FE_BE_UI.png" alt="Full-Stack Architecture" width="800">
+</p>
+
 1.  **Local Raw WebSocket (`/ws/dashboard`)**:
     - Dedicated for local data synchronization and internal status monitoring.
     - Handles raw data transmission directly within the backend ecosystem.
@@ -30,7 +34,7 @@ The system implements a sophisticated dual-channel communication strategy:
     - Primary integration point for the **Portfolio Frontend**.
     - **Security/Routing**: Uses custom `connectHeaders` (e.g., `client-type: frontend`).
     - **Protocol Flow**: Accepts data via `/app/*` destinations and broadcasts real-time updates through `@SendTo("/topic/messages")`, including automated server-side timestamps.
-<img src="./DOC/md/FE_BE_UI.png" alt="drawing" width="500"/>
+
 
 
 ## 🛠️ Technology Stack
@@ -46,11 +50,11 @@ The system implements a sophisticated dual-channel communication strategy:
 
 For detailed instructions on how to set up this backend on your local machine, please refer to the:
 
-👉 **[Live Installation Guide](DOC/md/install_for_backend_live.md)**
+👉 **[Live Installation Guide](DOC/md/install_for_backend.md)**
 
 ## 🌍 Multilingual Documentation
 
-- 🇩🇪 **[README in German / German Version](README_live_DE.md)**
+- 🇩🇪 **[README in German / German Version](README_DE.md)**
 
 ---
 *Developed by Agnes Velemi - Passionate Full-Stack Developer*
