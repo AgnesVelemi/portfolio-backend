@@ -1,0 +1,131 @@
+
+// https://www.w3schools.com/html/html5_semantic_elements.asp
+* {
+    box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f8;
+  padding: 40px 120px;
+}
+
+header, footer {
+    background-color: #5e6366;
+    color: white;
+
+    display: flex;
+    //text-align: center;
+    justify-content: space-between;
+    margin: 20px 20px 10px 20px;
+}
+
+header {
+  padding: 30px 30px 15px 30px;
+}
+
+footer {
+  padding: 15px 30px 15px 30px;
+}
+
+div.h3 {
+  margin-bottom: 10px;
+}
+
+fieldset {
+  width: 260px;
+  padding: 5px 10px 10px 10px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+legend {
+  padding: 0 2px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+button {
+  width: 255px;
+  padding: 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  transition: all 0.15s ease-in-out;
+}
+
+// button styles when the button is in the "off" state.
+button.off {
+  color: #062b30;
+}
+
+button:hover {
+  filter: brightness(0.90);
+}
+
+button.pressed {
+color: #2e0616;
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.35);
+  transform: translateY(2px);
+}
+
+
+.controls-container {
+    padding: 20px;
+    background: white;
+    margin: 25px 20px 20px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    display: block;
+}
+
+.control-group {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-connect { background-color: #22c55e; color: white; }
+.btn-disconnect { background-color: #ef4444; color: white; }
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+// END toggle switch button
+
+.btn-send { background-color: #3b82f6; color: white; }
+
+.input-field {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    flex: 1;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#messageContainer {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+footer.p {
+  text-align: right;
+}

@@ -1,4 +1,4 @@
-package dev.siample.dto;
+package dev.siample.dashboard.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,8 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class WSMessageToClientDTO {
-
+public class StompMsgToClientDto {
     private String outMessage;
     private OffsetDateTime timestamp;
-
+    private String clientType;
 }

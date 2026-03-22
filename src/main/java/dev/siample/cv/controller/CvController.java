@@ -1,4 +1,4 @@
-package dev.siample.controller;
+package dev.siample.cv.controller;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
