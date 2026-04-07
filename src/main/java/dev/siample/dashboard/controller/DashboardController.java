@@ -16,6 +16,9 @@ public class DashboardController {
     @Value("${app.environment.name}")
     private String environment;
 
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
+
     private final DashboardWebSocketHandler handler;
     private final WebSocketStatusService statusService;
     private DashboardStatusDto dashboardStatusDto;
@@ -35,6 +38,7 @@ public class DashboardController {
         model.addAttribute("wsConnected", wsConnected);
 
         model.addAttribute("environment", environment);
+        model.addAttribute("frontendUrl", frontendUrl);
         model.addAttribute("username", "Guest (default)");
         model.addAttribute("serverTimeZone", dashboardStatusDto.getTheTimeZones());
         model.addAttribute("serverStartTime", dashboardStatusDto.getServerStartTimeAsString());

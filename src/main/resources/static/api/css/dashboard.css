@@ -1,7 +1,6 @@
-
-// https://www.w3schools.com/html/html5_semantic_elements.asp
+/* https://www.w3schools.com/html/html5_semantic_elements.asp */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -10,18 +9,49 @@ body {
   padding: 40px 120px;
 }
 
-header, footer {
-    background-color: #5e6366;
-    color: white;
+header,
+footer {
+  background-color: #5e6366;
+  color: white;
 
-    display: flex;
-    //text-align: center;
-    justify-content: space-between;
-    margin: 20px 20px 10px 20px;
+  display: flex;
+  /* text-align: center; */
+  justify-content: space-between;
+  margin: 20px 20px 10px 20px;
 }
 
 header {
   padding: 30px 30px 15px 30px;
+  display: flex;
+  align-items: flex-start;
+}
+
+header>div {
+  display: flex;
+  flex-direction: column;
+}
+
+.jump-link {
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 18px;
+  border-radius: 15px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
+}
+
+.jump-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
 }
 
 footer {
@@ -59,7 +89,7 @@ button {
   transition: all 0.15s ease-in-out;
 }
 
-// button styles when the button is in the "off" state.
+/* button styles when the button is in the "off" state. */
 button.off {
   color: #062b30;
 }
@@ -69,61 +99,73 @@ button:hover {
 }
 
 button.pressed {
-color: #2e0616;
+  color: #2e0616;
   box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.35);
   transform: translateY(2px);
 }
 
 
 .controls-container {
-    padding: 20px;
-    background: white;
-    margin: 25px 20px 20px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    display: block;
+  padding: 20px;
+  background: white;
+  margin: 25px 20px 20px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  display: block;
 }
 
 .control-group {
-    margin-bottom: 15px;
-    display: flex;
-    gap: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
 }
 
-.btn-connect { background-color: #22c55e; color: white; }
-.btn-disconnect { background-color: #ef4444; color: white; }
+.btn-connect {
+  background-color: #22c55e;
+  color: white;
+}
+
+.btn-disconnect {
+  background-color: #ef4444;
+  color: white;
+}
+
 .btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: opacity 0.2s;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.2s;
 }
-// END toggle switch button
 
-.btn-send { background-color: #3b82f6; color: white; }
+/* END toggle switch button */
+
+.btn-send {
+  background-color: #3b82f6;
+  color: white;
+}
 
 .input-field {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  flex: 1;
 }
 
 #messageInput {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 #messageContainer {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
 }
 
 footer.p {

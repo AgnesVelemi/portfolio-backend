@@ -4,5 +4,7 @@ server:
 app:
   environment:
     name: PROD
+  frontend:
+    url: http://13.63.37.93
   websocket:
     allowed-origins: "http://13.63.37.93,http://13.63.37.93:80,http://13.63.37.93:8080,http://localhost:4200,http://localhost:8080"
