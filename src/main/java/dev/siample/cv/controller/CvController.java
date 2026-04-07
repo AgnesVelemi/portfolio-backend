@@ -16,6 +16,11 @@ import java.io.IOException;
 @RequestMapping("/api/cv")
 public class CvController {
 
+    @GetMapping({ "", "/" })
+    public ResponseEntity<Resource> downloadDefaultCv() throws IOException {
+        return downloadCv("en");
+    }
+
     @GetMapping("/{lang}")
     public ResponseEntity<Resource> downloadCv(@PathVariable String lang) throws IOException {
 

@@ -11,7 +11,7 @@
     </parent>
     <groupId>dev.siample</groupId>
     <artifactId>portfolio-backend</artifactId>
-    <version>1.0.1 (23-FEB-2026)</version>
+    <version>1.0.1</version>
     <name>portfolio-backend</name>
     <description>Demo project for Spring Boot</description>
 
@@ -52,6 +52,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

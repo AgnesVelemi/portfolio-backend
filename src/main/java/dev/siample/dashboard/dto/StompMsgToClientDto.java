@@ -15,4 +15,6 @@ public class StompMsgToClientDto {
     private String outMessage;
     private OffsetDateTime timestamp;
     private String clientType;
+    private String ip;
+    private String timezone;
 }

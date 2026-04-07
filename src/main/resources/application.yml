@@ -1,9 +1,10 @@
-# disables the check for the template location, 
-# to avoid errors if your templates are not 
-# in the default resources/templates location
-# spring.thymeleaf.check-template-location=false
 spring:
+  profiles:
+    active: dev
   thymeleaf:
+    cache: false
     check-template-location: false
-server:
-  port : 8080
+
+# Common application settings
+app:
+  name: Portfolio Dashboard

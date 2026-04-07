@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+app:
+  environment:
+    name: DEV
+  websocket:
+    allowed-origins: "http://localhost:4200,http://localhost:1025,http://localhost:8080"

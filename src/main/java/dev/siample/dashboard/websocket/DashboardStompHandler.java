@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -24,9 +23,8 @@ public class DashboardStompHandler {
     private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/greet") // Maps to /app/greet
-    @SendTo("/topic/greetings") // Direct return pattern, directbroadcast to all subscribers
-    public StompMsgToClientDto handleStompMessage(@Payload WSMessageFromClientDto wSMessageFromClientDto,
-                                                   Message<?> message) {
+    public void handleStompMessage(@Payload WSMessageFromClientDto wSMessageFromClientDto,
+                                   Message<?> message) {
 
         // Log the payload message
         String payload = wSMessageFromClientDto.getPayload();
@@ -34,39 +32,46 @@ public class DashboardStompHandler {
 
         // Log the headers
         Map<String, Object> headers = message.getHeaders();
-        System.out.println("STOMP Headers received: " + headers.toString());
-
+        
         // Retrieve the client-type from nativeHeaders
+        @SuppressWarnings("unchecked")
         Map<String, Object> nativeHeaders = (Map<String, Object>) headers.get("nativeHeaders");
-        String clientType = null;
+        String clientType = "Unknown";
 
         if (nativeHeaders != null) {
+            @SuppressWarnings("unchecked")
             List<String> clientTypes = (List<String>) nativeHeaders.get("client-type");
             if (clientTypes != null && !clientTypes.isEmpty()) {
                 clientType = clientTypes.get(0);
-                System.out.println("Client Type: " + clientType);
-            } else {
-                System.out.println("Client Type header not found.");
             }
         }
 
-        // Update dashboard stats
-        statusService.incrementMessages();
+        System.out.println("Processing /greet request from clientType: " + clientType);
 
-        // Simulating processing delay - Caution: This still blocks the thread, but
-        // we'll leave it for now as per original code context.
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        // Tag: FE if frontend (Angular), else BE
+        String tag = "frontend".equalsIgnoreCase(clientType) ? "FE" : "BE";
+        
+        // Get Real IP from attributes (captured by ClientIpInterceptor)
+        @SuppressWarnings("unchecked")
+        Map<String, Object> sessionAttributes = (Map<String, Object>) headers.get("simpSessionAttributes");
+        String ip = (sessionAttributes != null) ? (String) sessionAttributes.get("IP_ADDRESS") : null;
+
+        if (ip == null || ip.isEmpty()) {
+            ip = "unknown";
         }
 
-        // Return the DTO directly; Spring handles the conversion and sending to @SendTo
-        // destination
-        return new StompMsgToClientDto(
-                payload,
-                OffsetDateTime.now(),
-                clientType);
+        // 1. Update backend history (source of truth for page refreshes)
+        statusService.addFormattedMessage(tag, payload, ip);
+
+        // 2. Broadcast to all subscribers (real-time sync for dashboards)
+        messagingTemplate.convertAndSend("/topic/greetings", 
+            new StompMsgToClientDto(
+                payload, 
+                OffsetDateTime.now(), 
+                clientType, 
+                ip, 
+                "CET"
+            ));
     }
 
     @MessageMapping("/archive")

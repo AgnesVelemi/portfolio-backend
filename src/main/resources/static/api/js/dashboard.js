@@ -11,6 +11,29 @@ let messageCount = 0; // Count of messages
 let messages = []; // Global array for all received messages (WS and STOMP)
 let messagestoArchive = []; // Archive array for messages 1-10
 
+// Initialize messages array from existing HTML elements rendered by Thymeleaf
+document.addEventListener('DOMContentLoaded', () => {
+    const existingMessages = document.querySelectorAll('#messageContainer div');
+    existingMessages.forEach(msgEl => {
+        const text = msgEl.textContent;
+        // Parse the formatted string: [8] FE: CET:2026.04.06. 16:48:48 ip:192.168.1.10 | message: rembaba
+        // Fix: Removed the space after (\w+): because CET:%s has no space in Java code.
+        const match = text.match(/\[(\d+)\] (\w+): (\w+):([\d\.]+ [\d:]+) ip:([\d\.:\[\]]+) \| message: (.*)/);
+        if (match) {
+            messages.push({
+                arrivalNumber: parseInt(match[1]),
+                sentFrom: match[2],
+                sentFromTimezone: match[3],
+                timestamp: match[4],
+                sentFromIP: match[5],
+                outMessage: match[6]
+            });
+            messageCount = Math.max(messageCount, parseInt(match[1]));
+        }
+    });
+    console.log("Initialized from HTML: ", messages.length, "messages found.");
+});
+
 button.style.backgroundColor = "royalblue"; // Set initial button color
 
 function updateUI(isConnected) {
@@ -50,9 +73,14 @@ document.addEventListener("DOMContentLoaded", () => { // First webpage load or F
   });
 });
 
+// Dynamic WebSocket URL determination
+const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const host = window.location.host;
+const wsBase = `${protocol}//${host}`;
+
 function connectStomp() {
   stompClient = new StompJs.Client({
-    brokerURL: "ws://localhost:8080/ws/stomp",
+    brokerURL: `${wsBase}/ws/stomp`,
     connectHeaders: {
       "client-type": "frontend"
     },
@@ -72,10 +100,10 @@ function connectStomp() {
 
       const transformedData = {
         sentFrom: messageData.clientType === 'frontend' ? 'FE' : messageData.clientType,
-        sentFromIP: "192.168.1.10:8080",
+        sentFromIP: messageData.ip || "unknown",
         outMessage: messageData.outMessage,
         timestamp: formatTimestamp(messageData.timestamp),
-        sentFromTimezone: "CET"
+        sentFromTimezone: messageData.timezone || "CET"
       };
 
       transformedData.arrivalNumber = ++messageCount;
@@ -101,7 +129,7 @@ function connectStomp() {
 }
 
 function connect() {
-  socket = new WebSocket("ws://localhost:8080/ws/dashboard");
+  socket = new WebSocket(`${wsBase}/ws/dashboard`);
 
   socket.onopen = function () {
     console.log("WebSocket connection established.");
