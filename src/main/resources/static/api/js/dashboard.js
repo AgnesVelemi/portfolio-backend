@@ -13,25 +13,24 @@ let messagestoArchive = []; // Archive array for messages 1-10
 
 // Initialize messages array from existing HTML elements rendered by Thymeleaf
 document.addEventListener('DOMContentLoaded', () => {
-    const existingMessages = document.querySelectorAll('#messageContainer div');
-    existingMessages.forEach(msgEl => {
-        const text = msgEl.textContent;
-        // Parse the formatted string: [8] FE: CET:2026.04.06. 16:48:48 ip:192.168.1.10 | message: rembaba
-        // Fix: Removed the space after (\w+): because CET:%s has no space in Java code.
-        const match = text.match(/\[(\d+)\] (\w+): (\w+):([\d\.]+ [\d:]+) ip:([\d\.:\[\]]+) \| message: (.*)/);
-        if (match) {
-            messages.push({
-                arrivalNumber: parseInt(match[1]),
-                sentFrom: match[2],
-                sentFromTimezone: match[3],
-                timestamp: match[4],
-                sentFromIP: match[5],
-                outMessage: match[6]
-            });
-            messageCount = Math.max(messageCount, parseInt(match[1]));
-        }
-    });
-    console.log("Initialized from HTML: ", messages.length, "messages found.");
+  const existingMessages = document.querySelectorAll('#messageContainer div');
+  existingMessages.forEach(msgEl => {
+    const text = msgEl.textContent;
+    // New Format: [2] FE: 2026.04.08.07:27:04 received from 127.0.0.1 | message: dfdfd
+    const match = text.match(/\[(\d+)\] (\w+): ([\d\.:]+) received from ([\d\.:\[\]]+) \| message: (.*)/);
+    if (match) {
+      messages.push({
+        arrivalNumber: parseInt(match[1]),
+        sentFrom: match[2],
+        timestamp: match[3],
+        sentFromIP: match[4],
+        outMessage: match[5],
+        sentFromTimezone: "CET" // Defaulting since it's removed from display
+      });
+      messageCount = Math.max(messageCount, parseInt(match[1]));
+    }
+  });
+  console.log("Initialized from HTML: ", messages.length, "messages found.");
 });
 
 button.style.backgroundColor = "royalblue"; // Set initial button color
@@ -171,7 +170,7 @@ function sendWSMessageFromBackend() {
   if (message && socket.readyState === WebSocket.OPEN) {
     const messageData = {
       sentFrom: "BE",
-      sentFromIP: "192.168.1.10:8080",
+      sentFromIP: host,
       outMessage: message,
       timestamp: formatTimestamp(),
       sentFromTimezone: "CET"
@@ -201,7 +200,23 @@ function handleIncomingMessage(data) {
 }
 
 function formatMessage(data) {
-  return `[${data.arrivalNumber}] ${data.sentFrom}: ${data.sentFromTimezone}:${data.timestamp} ip:${data.sentFromIP} <b>| message: ${data.outMessage}</b>`;
+  let displayMessage = data.outMessage;
+  let displayIp = data.sentFromIP;
+
+  // If it's a BE message and looks like JSON, parse it for display
+  if (data.sentFrom === 'BE' && typeof data.outMessage === 'string' && data.outMessage.trim().startsWith('{')) {
+    try {
+      const parsed = JSON.parse(data.outMessage);
+      if (parsed.outMessage && parsed.sentFromIP) {
+        displayMessage = parsed.outMessage;
+        displayIp = parsed.sentFromIP;
+      }
+    } catch (e) {
+      // Non-JSON or parsing error, use original
+    }
+  }
+
+  return `[${data.arrivalNumber}] ${data.sentFrom}: ${data.timestamp} received from ${displayIp} <b>| message: ${displayMessage}</b>`;
 }
 
 function displayMessage(formattedMessage) {
@@ -216,7 +231,7 @@ function formatTimestamp(date = new Date()) {
   const hours = String(d.getHours()).padStart(2, '0');
   const minutes = String(d.getMinutes()).padStart(2, '0');
   const seconds = String(d.getSeconds()).padStart(2, '0');
-  return `${year}.${month}.${day}. ${hours}:${minutes}:${seconds}`;
+  return `${year}.${month}.${day}.${hours}:${minutes}:${seconds}`;
 }
 
 function renderMessages() {

@@ -9,7 +9,7 @@ set "SERVER_USER=ubuntu"
 set "FRONTEND_DIR=C:/ws/2026/portfolio-frontend"
 set "BACKEND_BUILD_DIR=./target"
 set "FRONTEND_BUILD_DIR=%FRONTEND_DIR%/dist/portfolio-frontend/browser"
-set "JAR_FILE_NAME=portfolio-backend-1.0.1.jar"
+:: set "JAR_FILE_NAME=portfolio-backend-1.0.1.jar"
 set "REMOTE_FRONTEND_DIR=~/frontend"
 set "REMOTE_BACKEND_DIR=~"
 set "REMOTE_STARTUP_SCRIPT=~/startup.sh"
@@ -21,6 +21,10 @@ if %ERRORLEVEL% neq 0 (
     echo Maven build failed!
     exit /b %ERRORLEVEL%
 )
+
+:: Automatically detect the newly built JAR file (ignoring the .original file)
+for /f "delims=" %%i in ('dir /b "%BACKEND_BUILD_DIR%\portfolio-backend-*.jar" ^| findstr /v ".original"') do set "JAR_FILE_NAME=%%i"
+echo Successfully built and detected: %JAR_FILE_NAME%
 
 echo --- Uploading Scripts ---
 scp -i "%PRIVATE_KEY_PATH%" shutdown.sh startup.sh "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_BACKEND_DIR%/"

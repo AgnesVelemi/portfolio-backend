@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Websocket Monitor</title>
     <link rel="icon" type="image/x-icon" th:href="@{/api/favicon.ico}">
-    <link rel="stylesheet" th:href="@{/api/css/dashboard.css(v='1.0.1')}">
+    <link rel="stylesheet" th:href="@{/api/css/dashboard.css(v=${version})}">
 
     <!-- STOMP library -->
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
@@ -63,10 +63,10 @@
     </section>
 
     <footer>
-        <p>version 1.0.1 (2026.Apr.07.)</p>
+        <p th:text="'version ' + ${version} + ' (' + ${buildDate} + ')'"></p>
         <p>&copy; 2026 All rights reserved (developed by Agnes Velemi)</p>
     </footer>
-    <script th:src="@{/api/js/dashboard.js(v='1.0.1')}"></script>
+    <script th:src="@{/api/js/dashboard.js(v=${version})}"></script>
 </body>
 
 </html>

@@ -8,8 +8,8 @@ if [ -z "$JAR_NAME" ]; then
     exit 1
 fi
 
-# Find the PID of the running JAR using pgrep -f (matches full command line)
-JAR_PID=$(pgrep -f "$JAR_NAME")
+# Find the PID of any running portfolio-backend JAR
+JAR_PID=$(pgrep -f "portfolio-backend-.*\.jar")
 
 if [ -n "$JAR_PID" ]; then
     echo "Stopping $JAR_NAME (PID: $JAR_PID)..."
