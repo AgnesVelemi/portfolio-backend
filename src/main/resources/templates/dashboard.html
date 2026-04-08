@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Websocket Monitor</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/api/favicon.ico}">
     <link rel="stylesheet" th:href="@{/api/css/dashboard.css}">
 
     <!-- STOMP library -->
@@ -13,7 +14,10 @@
 <body>
     <header>
         <div>
-            <h1>Monitoring Dashboard of portfolio-backend</h1>
+            <div class="title-container">
+                <img th:src="@{/api/favicon.ico}" alt="Logo" class="header-logo">
+                <h1>Monitoring Dashboard of portfolio-backend</h1>
+            </div>
             <p id="serverStartTime" th:text="'Server is up since ' + ${serverStartTime}" class="metric-value">N/A</p>
             <p>Server Time Zone: <span th:text="${serverTimeZone}">00:00</span></p>
         </div>
@@ -26,7 +30,7 @@
     </header>
 
     <section class="controls-container">
-        <h2>Locally WebSocket</h2>
+        <h2>Locally Raw WebSocket</h2>
         <div class="control-group">
             <fieldset id="wsFieldset" th:classappend="${wsConnected} ? 'pressed' : 'off'">
                 <legend id="wsLegend" th:text="${wsConnected} ? 'websocket-on' : 'websocket-off'"></legend>
