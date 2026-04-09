@@ -23,8 +23,8 @@ public class WebSocketStatusService {
     private final List<String> currentMessages = Collections.synchronizedList(new ArrayList<>());
     private final List<String> archivedMessages = Collections.synchronizedList(new ArrayList<>());
 
-    private static final DateTimeFormatter MSG_FORMATTER = 
-            DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm:ss", Locale.ENGLISH);
+    private static final DateTimeFormatter MSG_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm:ss",
+            Locale.ENGLISH);
 
     public void incrementClients() {
         connectedClients.incrementAndGet();
@@ -50,17 +50,17 @@ public class WebSocketStatusService {
 
     public synchronized void addFormattedMessage(String type, String payload, String ip) {
         long currentCount = totalMessages.incrementAndGet();
-        
+
         // Numbering within the batch 1-10
         int displayNum = (int) ((currentCount - 1) % 10) + 1;
-        
+
         String displayPayload = payload;
         String displayIp = ip;
 
         // If it's a BE message and looks like JSON, try to extract values
         if ("BE".equals(type) && payload != null && payload.trim().startsWith("{")) {
             try {
-                // Using simple string parsing to avoid adding Jackson dependency if not needed, 
+                // Using simple string parsing to avoid adding Jackson dependency if not needed,
                 // but since it's Spring, let's assume Jackson is fine.
                 // However, for simplicity and robustness in this specific format:
                 if (payload.contains("\"outMessage\":\"") && payload.contains("\"sentFromIP\":\"")) {
@@ -76,7 +76,7 @@ public class WebSocketStatusService {
 
         // Format: [1] BE: 2026.04.08.07:25:44 received from 13.63.37.93 | message: 123
         String timestamp = ZonedDateTime.now().format(MSG_FORMATTER);
-        String formattedMsg = String.format("[%d] %s: %s received from %s | message: %s", 
+        String formattedMsg = String.format("<div>[%d] %s: %s received from %s | message: %s</div>",
                 displayNum, type, timestamp, displayIp, displayPayload);
 
         // Reset batch if we just hit 10
@@ -91,11 +91,11 @@ public class WebSocketStatusService {
     }
 
     public String getCurrentMessagesHtml() {
-        return String.join("<br/>", currentMessages);
+        return String.join("", currentMessages);
     }
 
     public String getArchivedMessagesHtml() {
-        return String.join("<br/>", archivedMessages);
+        return String.join("", archivedMessages);
     }
 
     public DashboardStatusDto getCurrentStats() {

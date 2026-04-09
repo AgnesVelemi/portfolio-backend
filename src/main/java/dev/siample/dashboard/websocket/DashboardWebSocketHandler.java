@@ -1,16 +1,12 @@
 package dev.siample.dashboard.websocket;
 
-import dev.siample.dashboard.dto.StompMsgToClientDto;
 import dev.siample.dashboard.service.WebSocketStatusService;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -18,13 +14,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class DashboardWebSocketHandler extends TextWebSocketHandler {
 
     private final WebSocketStatusService statusService;
-    private final SimpMessagingTemplate messagingTemplate;
     private final AtomicBoolean connected = new AtomicBoolean(false);
 
-    public DashboardWebSocketHandler(WebSocketStatusService statusService, 
-                                     @Lazy SimpMessagingTemplate messagingTemplate) {
+    public DashboardWebSocketHandler(WebSocketStatusService statusService) {
         this.statusService = statusService;
-        this.messagingTemplate = messagingTemplate;
     }
 
     public boolean isConnected() {
@@ -57,8 +50,9 @@ public class DashboardWebSocketHandler extends TextWebSocketHandler {
         // Add to history as BE
         statusService.addFormattedMessage("BE", payload, ip);
 
-        // Broadcast to STOMP topic so all dashboards update in real-time
-        messagingTemplate.convertAndSend("/topic/greetings", 
-            new StompMsgToClientDto(payload, OffsetDateTime.now(), "BE", ip, "CET"));
+        // Echo the message back to the dashboard session for real-time update via its listener
+        if (session.isOpen()) {
+            session.sendMessage(message);
+        }
     }
 }

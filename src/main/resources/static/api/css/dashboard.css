@@ -111,7 +111,8 @@ button:hover {
 }
 
 button.pressed {
-  color: #2e0616;
+  color: black;
+  background-color: #d19615;
   box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.35);
   transform: translateY(2px);
 }
