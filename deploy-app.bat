@@ -4,7 +4,8 @@
 
 @echo off
 set "PRIVATE_KEY_PATH=C:/Users/User/.ssh/portfolio-siample-key.pem"
-set "SITE_DOMAIN=13.63.37.93"
+::set "SITE_DOMAIN=13.63.37.93"
+set "SITE_DOMAIN=portfolio-frontend.aws.siample.dev"
 set "SERVER_USER=ubuntu"
 set "FRONTEND_DIR=C:/ws/2026/portfolio-frontend"
 set "BACKEND_BUILD_DIR=./target"

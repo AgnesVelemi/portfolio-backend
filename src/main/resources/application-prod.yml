@@ -5,6 +5,6 @@ app:
   environment:
     name: PROD
   frontend:
-    url: http://13.63.37.93
+    url: https://portfolio-frontend.aws.siample.dev
   websocket:
-    allowed-origins: "http://13.63.37.93,http://13.63.37.93:80,http://13.63.37.93:8080,http://localhost:4200,http://localhost:8080"
+    allowed-origins: "https://portfolio-frontend.aws.siample.dev,https://portfolio-backend.aws.siample.dev,http://localhost:4200,http://localhost:8080"
