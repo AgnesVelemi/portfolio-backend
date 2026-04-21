@@ -37,3 +37,13 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Local/Sensitive files ###
+*.log
+build_log.txt
+build_log_retry.txt
+build_output.txt
+build_output_utf8.txt
+run_log.txt
+deploy-app.bat
+scratch/

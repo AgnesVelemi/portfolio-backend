@@ -8,14 +8,6 @@ if [ -z "$JAR_PATH" ]; then
     exit 1
 fi
 
-# Cleanup: Delete old portfolio-backend JARs except the one we are about to start
-JAR_DIR=$(dirname "$JAR_PATH")
-JAR_NAME=$(basename "$JAR_PATH")
-
-echo "Cleaning up old JAR files in $JAR_DIR (keeping $JAR_NAME)..."
-# find will look for files matching the pattern, but exclude the one we just uploaded.
-find "$JAR_DIR" -maxdepth 1 -name "portfolio-backend-*.jar" ! -name "$JAR_NAME" -type f -delete
-
 LOG_FILE="app.log"
 
 # nohup: 'No HangUp' - keeps the process running even after you log out of the console.

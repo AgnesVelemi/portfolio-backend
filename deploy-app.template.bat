@@ -1,16 +1,16 @@
-:: ssh -i C:/Users/User/.ssh/portfolio-siample-key.pem ubuntu@13.63.37.93
-:: C:\Users\User>  cd c:/ws/2026/portfolio-backend
-:: .\deploy-app.bat
-
 @echo off
-set "PRIVATE_KEY_PATH=C:/Users/User/.ssh/portfolio-siample-key.pem"
-::set "SITE_DOMAIN=13.63.37.93"
-set "SITE_DOMAIN=portfolio-frontend.aws.siample.dev"
+:: Deployment Script Template
+:: Copy this file to deploy-app.bat and fill in your actual values.
+:: deploy-app.bat is ignored by git to protect your sensitive data.
+
+set "PRIVATE_KEY_PATH=C:/path/to/your/key.pem"
+set "SITE_DOMAIN=your-domain.com"
 set "SERVER_USER=ubuntu"
-set "FRONTEND_DIR=C:/ws/2026/portfolio-frontend"
+set "FRONTEND_DIR=C:/path/to/your/portfolio-frontend"
 set "BACKEND_BUILD_DIR=./target"
 set "FRONTEND_BUILD_DIR=%FRONTEND_DIR%/dist/portfolio-frontend/browser"
-:: set "JAR_FILE_NAME=portfolio-backend-1.0.1.jar"
+
+:: Remote directory structure
 set "REMOTE_FRONTEND_DIR=~/frontend"
 set "REMOTE_BACKEND_DIR=~"
 set "REMOTE_STARTUP_SCRIPT=~/startup.sh"
@@ -23,7 +23,7 @@ if %ERRORLEVEL% neq 0 (
     exit /b %ERRORLEVEL%
 )
 
-:: Automatically detect the newly built JAR file (ignoring the .original file)
+:: Automatically detect the newly built JAR file
 for /f "delims=" %%i in ('dir /b "%BACKEND_BUILD_DIR%\portfolio-backend-*.jar" ^| findstr /v ".original"') do set "JAR_FILE_NAME=%%i"
 echo Successfully built and detected: %JAR_FILE_NAME%
 
@@ -31,7 +31,6 @@ echo --- Uploading Scripts ---
 scp -i "%PRIVATE_KEY_PATH%" -o StrictHostKeyChecking=no shutdown.sh startup.sh "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_BACKEND_DIR%/"
 
 echo --- Stopping backend and cleaning frontend ---
-:: Combine chmod, shutdown, and cleaning into one SSH session
 ssh -i "%PRIVATE_KEY_PATH%" -o StrictHostKeyChecking=no "%SERVER_USER%@%SITE_DOMAIN%" "chmod +x %REMOTE_SHUTDOWN_SCRIPT% %REMOTE_STARTUP_SCRIPT% && %REMOTE_SHUTDOWN_SCRIPT% %JAR_FILE_NAME% && rm -rf %REMOTE_FRONTEND_DIR%/*"
 
 echo --- Uploading frontend files ---

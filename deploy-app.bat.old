@@ -28,19 +28,24 @@ for /f "delims=" %%i in ('dir /b "%BACKEND_BUILD_DIR%\portfolio-backend-*.jar" ^
 echo Successfully built and detected: %JAR_FILE_NAME%
 
 echo --- Uploading Scripts ---
-scp -i "%PRIVATE_KEY_PATH%" -o StrictHostKeyChecking=no shutdown.sh startup.sh "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_BACKEND_DIR%/"
+scp -i "%PRIVATE_KEY_PATH%" shutdown.sh startup.sh "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_BACKEND_DIR%/"
+ssh -i "%PRIVATE_KEY_PATH%" "%SERVER_USER%@%SITE_DOMAIN%" "chmod +x %REMOTE_SHUTDOWN_SCRIPT% %REMOTE_STARTUP_SCRIPT%"
 
-echo --- Stopping backend and cleaning frontend ---
-:: Combine chmod, shutdown, and cleaning into one SSH session
-ssh -i "%PRIVATE_KEY_PATH%" -o StrictHostKeyChecking=no "%SERVER_USER%@%SITE_DOMAIN%" "chmod +x %REMOTE_SHUTDOWN_SCRIPT% %REMOTE_STARTUP_SCRIPT% && %REMOTE_SHUTDOWN_SCRIPT% %JAR_FILE_NAME% && rm -rf %REMOTE_FRONTEND_DIR%/*"
+echo --- Stopping existing backend ---
+ssh -i "%PRIVATE_KEY_PATH%" "%SERVER_USER%@%SITE_DOMAIN%" "%REMOTE_SHUTDOWN_SCRIPT% %JAR_FILE_NAME%"
+
+echo --- Cleaning remote frontend directory ---
+ssh -i "%PRIVATE_KEY_PATH%" "%SERVER_USER%@%SITE_DOMAIN%" "rm -rf %REMOTE_FRONTEND_DIR%/*"
 
 echo --- Uploading frontend files ---
-scp -i "%PRIVATE_KEY_PATH%" -o StrictHostKeyChecking=no -r "%FRONTEND_BUILD_DIR%/"* "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_FRONTEND_DIR%/"
+:: Note: Angular builds usually go to dist/project-name/browser or similar.
+:: If the path is different, adjust FRONTEND_BUILD_DIR above.
+scp -i "%PRIVATE_KEY_PATH%" -r "%FRONTEND_BUILD_DIR%/"* "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_FRONTEND_DIR%/"
 
 echo --- Uploading backend JAR ---
-scp -i "%PRIVATE_KEY_PATH%" -o StrictHostKeyChecking=no "%BACKEND_BUILD_DIR%/%JAR_FILE_NAME%" "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_BACKEND_DIR%/"
+scp -i "%PRIVATE_KEY_PATH%" "%BACKEND_BUILD_DIR%/%JAR_FILE_NAME%" "%SERVER_USER%@%SITE_DOMAIN%:%REMOTE_BACKEND_DIR%/"
 
 echo --- Starting backend ---
-ssh -i "%PRIVATE_KEY_PATH%" -o StrictHostKeyChecking=no "%SERVER_USER%@%SITE_DOMAIN%" "%REMOTE_STARTUP_SCRIPT% %REMOTE_BACKEND_DIR%/%JAR_FILE_NAME%"
+ssh -i "%PRIVATE_KEY_PATH%" "%SERVER_USER%@%SITE_DOMAIN%" "%REMOTE_STARTUP_SCRIPT% %REMOTE_BACKEND_DIR%/%JAR_FILE_NAME%"
 
 echo Deployment complete!
